@@ -42,7 +42,7 @@ func main() {
 
 	switch runtime.GOOS {
 	case "linux":
-		historyFilepath = filepath.Join("var", "namesilo-ddns-history")
+		historyFilepath = filepath.Join("/var", "namesilo-ddns-history")
 	case "windows":
 		historyFilepath = filepath.Join(os.Getenv("TEMP"), "namesilo-ddns-history")
 	}
