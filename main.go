@@ -47,11 +47,16 @@ func main() {
 		historyFilepath = filepath.Join(os.Getenv("TEMP"), "namesilo-ddns-history")
 	}
 
-	// get history ip
-	history, err := os.ReadFile(historyFilepath)
-	if err != nil {
-		slog.Error("get history ip error", "message", err)
-		return
+	// get history ip if file exist, otherwise history ip is empty
+	var history string
+	_, err := os.Stat(historyFilepath)
+	if !os.IsNotExist(err) {
+		byt, err := os.ReadFile(historyFilepath)
+		if err != nil {
+			slog.Error("get history ip error", "message", err)
+			return
+		}
+		history = string(byt)
 	}
 
 	// get ip
@@ -62,7 +67,7 @@ func main() {
 	}
 
 	// IP has not changed
-	if ip == string(history) {
+	if ip == history {
 		slog.Info("ip has not changed")
 		return
 	}
